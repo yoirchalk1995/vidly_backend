@@ -1,21 +1,13 @@
-# Vidly APIs Documentation
+# Rentals
 
-## Genres
-
-## Customers
-
-## Movies
-
-## Rentals
-
-### New Rental
+## New Rental
 **POST api/rentals**
 Creates new rental document
-#### Request Body
+### Request Body
 - `customerId` (string, requires) - the **mongoose objectId** of customer making rental.
 - `movieId` (string, requires) - the **mongoose objectId** of movie being rented.
 - `rentalDate` (string, requires) - A valid date string. If omitted, it will be set automatically at the time of the request.
-#### Request Example
+### Request Example
 ``` json
 {
   "customerId": "65d9a1b4c3d8e71234d56788",
@@ -23,7 +15,7 @@ Creates new rental document
 }
 ```
 
-#### Response
+### Response
 ``` json
 {
 	"customer": {
@@ -46,14 +38,14 @@ Creates new rental document
 ```
 
 
-### Return Rental
+## Return Rental
 **POST api/rentals/:id**
 Marks rental as returned
-#### URL Parameters
+### URL Parameters
 - `:id` (string, required) - the **mongoose objectId** of the rental being returned
-#### Request Example
+### Request Example
 ``` http
 PATCH /api/rentals/65d9c3f2a5b8e71234d56789 HTTP/1.1
 ```
     
-#### Response 
+### Response 
