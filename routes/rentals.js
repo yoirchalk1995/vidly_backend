@@ -3,10 +3,11 @@ const { validator } = require("../models/rentals");
 const { Rental } = require("../models/rentals");
 const { Customer } = require("../models/customers");
 const { Movie } = require("../models/movies");
+const auth = require("../middlewares/auth");
 
 const router = express.Router();
 
-router.post("/", async (req, res) => {
+router.post("/", auth, async (req, res) => {
   const { error } = validator(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
@@ -51,7 +52,7 @@ router.get("/", async (req, res) => {
   res.send(rentals);
 });
 
-router.patch("/:id", async (req, res) => {
+router.patch("/:id", auth, async (req, res) => {
   let rental = await Rental.findById(req.params.id);
   if (!rental) return res.status(404).send("rental not found");
 

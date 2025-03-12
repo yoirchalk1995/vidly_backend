@@ -9,13 +9,6 @@ const auth = require("../middlewares/auth");
 
 const router = express.Router();
 
-const middleware = function (req, res, next) {
-  if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-    return res.status(400).send(`id ${id} is not a valid mongoose id`);
-  }
-  next();
-};
-
 router.get("/", async (req, res) => {
   const result = await Customer.find().sort("name");
   if (notFoundHandler(res, result, "customers")) return;
