@@ -1,4 +1,5 @@
 # Rentals
+api/rentals
 
 ## New Rental
 **POST api/rentals**
