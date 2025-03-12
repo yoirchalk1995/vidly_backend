@@ -5,6 +5,7 @@ const validateMongooseId = require("../middlewares/validateMongooseId");
 const notFoundHandler = require("../utils/handleNotFound");
 const { Customer } = require("../models/customers");
 const { validator: validateBody } = require("../models/customers");
+const auth = require("../middlewares/auth");
 
 const router = express.Router();
 
@@ -28,7 +29,7 @@ router.get("/:id", validateMongooseId, async (req, res) => {
   res.send(result);
 });
 
-router.delete("/:id", validateMongooseId, async (req, res) => {
+router.delete("/:id", [validateMongooseId, auth], async (req, res) => {
   const result = await Customer.findByIdAndDelete(req.params.id);
   if (!result) return res.status(404).send(`customer with id ${id} not found`);
   res.send(result);
