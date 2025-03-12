@@ -22,10 +22,10 @@ const userSchema = mongoose.Schema({
   },
 });
 
-const User = mongoose.model("user", userSchema);
-User.userSchema.methods.generateAuthToken = function () {
-  return jwt.sign({ _id: this._id }, "12345");
+userSchema.methods.generateAuthToken = function () {
+  return jwt.sign(this._id, "12345");
 };
+const User = mongoose.model("user", userSchema);
 
 const complexityOptions = {
   min: 8, // Minimum length
