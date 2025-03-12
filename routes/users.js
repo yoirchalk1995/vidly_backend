@@ -20,6 +20,7 @@ router.post("/", async (req, res) => {
     name: req.body.name,
     email: req.body.email,
     hashedPassword,
+    isAdmin: req.body.isAdmin,
   });
 
   user = await user.save();
