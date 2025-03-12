@@ -4,6 +4,7 @@ const { Rental } = require("../models/rentals");
 const { Customer } = require("../models/customers");
 const { Movie } = require("../models/movies");
 const auth = require("../middlewares/auth");
+const admin = require("../middlewares/admin");
 
 const router = express.Router();
 
@@ -52,7 +53,7 @@ router.get("/", async (req, res) => {
   res.send(rentals);
 });
 
-router.patch("/:id", auth, async (req, res) => {
+router.patch("/:id", [auth, admin], async (req, res) => {
   let rental = await Rental.findById(req.params.id);
   if (!rental) return res.status(404).send("rental not found");
 
