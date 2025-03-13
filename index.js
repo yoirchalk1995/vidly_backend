@@ -8,7 +8,7 @@ const users = require("./routes/users");
 const auth = require("./routes/auth");
 const mongoose = require("mongoose");
 const Joi = require("joi");
-const errors = require("./middlewares/errors").default;
+const errors = require("./middlewares/errors");
 
 mongoose
   .connect("mongodb://localhost/vidly", {
