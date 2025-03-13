@@ -5,6 +5,7 @@ const { Customer } = require("../models/customers");
 const { Movie } = require("../models/movies");
 const auth = require("../middlewares/auth");
 const admin = require("../middlewares/admin");
+const mongoose = require("mongoose");
 
 const router = express.Router();
 
@@ -41,16 +42,20 @@ router.post("/", auth, async (req, res) => {
   });
 
   rental = await rental.save();
-
-  let task = Faw;
   res.send(rental);
 });
 
 router.get("/", async (req, res) => {
-  const rentals = await Rental.find()
-    .sort("name")
-    .select("customer rentalDate retunrDate");
-  res.send(rentals);
+  try {
+    const rentals = await Rental.find()
+      .sort("name")
+      .select("customer rentalDate returnDate");
+
+    res.send(rentals); // Send the rentals if everything works
+  } catch (ex) {
+    console.error("Error fetching rentals:", ex); // Log the error for debugging
+    res.status(500).send("somthing went wrong");
+  }
 });
 
 router.patch("/:id", [auth, admin], async (req, res) => {

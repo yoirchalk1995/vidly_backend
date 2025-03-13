@@ -1,4 +1,3 @@
-require("express-async-errors");
 const express = require("express");
 const genres = require("./routes/genres");
 const movies = require("./routes/movies");
@@ -6,13 +5,15 @@ const rentals = require("./routes/rentals");
 const customers = require("./routes/customers");
 const users = require("./routes/users");
 const auth = require("./routes/auth");
-const winston = require("winston");
 const mongoose = require("mongoose");
 const Joi = require("joi");
 const JoiObjectId = require("joi-objectid")(Joi);
+const errors = require("./middlewares/errors");
 
 mongoose
-  .connect("mongodb://localhost/vidly")
+  .connect("mongodb://localhost/vidly", {
+    serverSelectionTimeoutMS: 5000,
+  })
   .then(() => console.log("connected to db"))
   .catch((ex) => console.error("connection failed", ex));
 
@@ -26,19 +27,11 @@ app.use("/api/movies", movies);
 app.use("/api/rentals", rentals);
 app.use("/api/users", users);
 app.use("/api/auth", auth);
+app.use(errors);
 
 app.get("/", (req, res) => {
   res.send("hello world");
 });
-
-winston.exceptions.handle(
-  new winston.transports.File({ filename: "uncaughtExceptions.log" }),
-  new winston.transports.Console("error")
-);
-winston.rejections.handle(
-  new winston.transports.File({ filename: "unhandledRejections.log" }),
-  new winston.transports.Console("error")
-);
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
