@@ -46,15 +46,11 @@ router.post("/", auth, async (req, res) => {
 });
 
 router.get("/", async (req, res, next) => {
-  try {
-    const rentals = await Rental.find()
-      .sort("name")
-      .select("customer rentalDate returnDate");
+  const rentals = await Rental.find()
+    .sort("name")
+    .select("customer rentalDate returnDate");
 
-    res.send(rentals); // Send the rentals if everything works
-  } catch (ex) {
-    next(ex);
-  }
+  res.send(rentals); // Send the rentals if everything works
 });
 
 router.patch("/:id", [auth, admin], async (req, res) => {

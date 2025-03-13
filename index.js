@@ -1,3 +1,4 @@
+require("express-async-errors");
 const express = require("express");
 const genres = require("./routes/genres");
 const movies = require("./routes/movies");
@@ -7,8 +8,7 @@ const users = require("./routes/users");
 const auth = require("./routes/auth");
 const mongoose = require("mongoose");
 const Joi = require("joi");
-const JoiObjectId = require("joi-objectid")(Joi);
-const errors = require("./middlewares/errors");
+const errors = require("./middlewares/errors").default;
 
 mongoose
   .connect("mongodb://localhost/vidly", {
