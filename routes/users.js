@@ -20,10 +20,12 @@ router.post("/", async (req, res) => {
     name: req.body.name,
     email: req.body.email,
     hashedPassword,
+    isAdmin: req.body.isAdmin,
   });
 
   user = await user.save();
-  res.send(user);
+  const token = user.generateAuthToken();
+  res.header("x-auth-token", token).send(user);
 });
 
 module.exports = router;
