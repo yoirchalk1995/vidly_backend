@@ -45,7 +45,7 @@ router.post("/", auth, async (req, res) => {
   res.send(rental);
 });
 
-router.get("/", async (req, res) => {
+router.get("/", async (req, res, next) => {
   try {
     const rentals = await Rental.find()
       .sort("name")
@@ -53,8 +53,7 @@ router.get("/", async (req, res) => {
 
     res.send(rentals); // Send the rentals if everything works
   } catch (ex) {
-    console.error("Error fetching rentals:", ex); // Log the error for debugging
-    res.status(500).send("somthing went wrong");
+    next(ex);
   }
 });
 
