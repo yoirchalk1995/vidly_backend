@@ -46,6 +46,7 @@ router.post("/", auth, async (req, res) => {
 });
 
 router.get("/", async (req, res, next) => {
+  throw new Error("couldnt get genres");
   const rentals = await Rental.find()
     .sort("name")
     .select("customer rentalDate returnDate");
