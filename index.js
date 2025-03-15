@@ -10,9 +10,9 @@ const mongoose = require("mongoose");
 const Joi = require("joi");
 const errors = require("./middlewares/errors");
 const winston = require("winston");
-const { run } = require("./startup/db");
+const { initializeDB } = require("./startup/db");
 
-run().catch(console.dir);
+initializeDB().catch(console.dir);
 
 const app = express();
 

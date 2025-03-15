@@ -7,7 +7,7 @@ const clientOptions = {
   serverApi: { version: "1", strict: true, deprecationErrors: true },
 };
 
-async function run() {
+async function initializeDB() {
   try {
     // Create a Mongoose client with a MongoClientOptions object to set the Stable API version
     await mongoose.connect(uri, clientOptions);
@@ -21,4 +21,4 @@ async function run() {
   }
 }
 
-module.exports = { run };
+module.exports = { initializeDB };
