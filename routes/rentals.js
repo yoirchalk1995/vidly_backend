@@ -21,32 +21,43 @@ router.post("/", auth, async (req, res) => {
 
   if (movie.numberInStock === 0)
     return res.status(400).send("movie not in stock");
-  movie.set({ numberInStock: movie.numberInStock - 1 });
 
-  await movie.save(); //dont want this to excecute if save rental fails...
+  const session = await mongoose.startSession();
+  session.startTransaction();
+  try {
+    movie.set({ numberInStock: movie.numberInStock - 1 });
 
-  let rental = new Rental({
-    customer: {
-      customerId: customer._id,
-      name: customer.name,
-      isGold: customer.isGold,
-      phone: customer.number,
-    },
-    movie: {
-      movieId: movie._id,
-      name: movie.title,
-      dailyRentalRate: movie.dailyRentalRate,
-    },
-    rentalDate: req.body.rentalDate,
-    returnDate: req.body.returnDate,
-  });
+    await movie.save({ session });
 
-  rental = await rental.save();
-  res.send(rental);
+    let rental = new Rental({
+      customer: {
+        customerId: customer._id,
+        name: customer.name,
+        isGold: customer.isGold,
+        phone: customer.number,
+      },
+      movie: {
+        movieId: movie._id,
+        name: movie.title,
+        dailyRentalRate: movie.dailyRentalRate,
+      },
+      rentalDate: req.body.rentalDate,
+      returnDate: req.body.returnDate,
+    });
+
+    rental = await rental.save({ session });
+    res.send(rental);
+
+    await session.commitTransaction();
+    session.endSession();
+  } catch (ex) {
+    await session.abortTransaction(); // transaction change
+    session.endSession(); // transaction change
+    res.status(500).send("Something failed.");
+  }
 });
 
 router.get("/", async (req, res, next) => {
-  throw new Error("couldnt get genres");
   const rentals = await Rental.find()
     .sort("name")
     .select("customer rentalDate returnDate");
