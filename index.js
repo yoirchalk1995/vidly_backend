@@ -27,14 +27,14 @@ app.use("/api/auth", auth);
 app.use(errors);
 
 process.on("uncaughtException", (ex) => {
-  logger.error(ex.message, ex);
-  process.exit(1);
+  logger.on("finish", () => process.exit(1));
 });
 
 process.on("unhandledRejection", (ex) => {
-  logger.error(ex.message, ex);
-  process.exit(1);
+  logger.on("finish", () => process.exit(1));
 });
+
+throw new Error("is this logged or not?");
 
 app.get("/", (req, res) => {
   res.send("hello world");

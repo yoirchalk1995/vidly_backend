@@ -19,5 +19,13 @@ const logger = winston.createLogger({
       db: "mongodb+srv://yoirchalk1995:yoirchalk1995@cluster0.b2d72.mongodb.net/vidly?retryWrites=true&w=majority&appName=Cluster0",
     }),
   ],
+  exceptionHandlers: [
+    new winston.transports.File({ filename: "logs/exceptions.log" }),
+    new winston.transports.Console(),
+  ],
+  rejectionHandlers: [
+    new winston.transports.File({ filename: "logs/rejections.log" }),
+    new winston.transports.Console(),
+  ],
 });
 module.exports = logger;
