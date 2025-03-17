@@ -9,8 +9,8 @@ const auth = require("./routes/auth");
 const mongoose = require("mongoose");
 const Joi = require("joi");
 const errors = require("./middlewares/errors");
-const winston = require("winston");
 const { initializeDB } = require("./startup/db");
+const logger = require("./utils/loggers");
 
 initializeDB().catch(console.dir);
 
@@ -25,6 +25,16 @@ app.use("/api/rentals", rentals);
 app.use("/api/users", users);
 app.use("/api/auth", auth);
 app.use(errors);
+
+process.on("uncaughtException", (ex) => {
+  logger.on("finish", () => process.exit(1));
+});
+
+process.on("unhandledRejection", (ex) => {
+  logger.on("finish", () => process.exit(1));
+});
+
+throw new Error("is this logged or not?");
 
 app.get("/", (req, res) => {
   res.send("hello world");
