@@ -22,10 +22,20 @@ const logger = winston.createLogger({
   exceptionHandlers: [
     new winston.transports.File({ filename: "logs/exceptions.log" }),
     new winston.transports.Console(),
+    new winston.transports.MongoDB({
+      level: "error",
+      collection: "logs",
+      db: "mongodb+srv://yoirchalk1995:yoirchalk1995@cluster0.b2d72.mongodb.net/vidly?retryWrites=true&w=majority&appName=Cluster0",
+    }),
   ],
   rejectionHandlers: [
     new winston.transports.File({ filename: "logs/rejections.log" }),
     new winston.transports.Console(),
+    new winston.transports.MongoDB({
+      level: "error",
+      collection: "logs",
+      db: "mongodb+srv://yoirchalk1995:yoirchalk1995@cluster0.b2d72.mongodb.net/vidly?retryWrites=true&w=majority&appName=Cluster0",
+    }),
   ],
 });
 module.exports = logger;
