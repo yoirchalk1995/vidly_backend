@@ -18,10 +18,6 @@ process.on("unhandledRejection", (ex) => {
   logger.on("finish", () => process.exit(1));
 });
 
-app.get("/", (req, res) => {
-  res.send("hello world");
-});
-
 const port = process.env.PORT || 3001;
 app.listen(port, () => {
   console.log(`listening on port ${port}`);
